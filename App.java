@@ -8,10 +8,12 @@ public class App {
       System.out.println("What word would you like to have the other player(s) guess?");
       String wordInput = keyboard.nextLine();
       wordInput = wordInput.toLowerCase();
+      String wordInputTwo = wordInput;
       System.out.println("Would you like to add a category (Answer Y or N)?");
       String addCategory = keyboard.nextLine();
+      addCategory = addCategory.toLowerCase();
       String category = "";
-      if(addCategory.equals("Y"))
+      if(addCategory.equals("y"))
       {
         System.out.println("What would you like to make the category?");
         category = keyboard.nextLine();
@@ -20,14 +22,18 @@ public class App {
       int wordLength = wordInput.length();
       int correctLettersGuessed = 0;
       int wrongGuesses = 0;
+      String wrongLettersGuessed = "";
       String correctGuesses = "*";
       String emptyLetter = "*";
-      String newGuess
-      int guessIndex
+      String newGuess;
+      int guessIndex;
+
+      //makes 'correctGuesses' variable have right number of "*"
       while(wordLength != correctGuesses.length())
       {
         correctGuesses = emptyLetter + correctGuesses;
       }
+
       //resetting the frame (outside of loop so loop starts with analyzing guesses)
       for(int i = 50; i>0; i--)
       {
@@ -38,11 +44,12 @@ public class App {
       System.out.println(correctGuesses);
 
       //gameplay loop starts
-      while(correctGuesses != wordLength)
+      while(correctLettersGuessed != wordLength)
       {
         //User Guesses a Letter
         System.out.println("Please input your guess");
         newGuess = keyboard.nextLine();
+        newGuess = newGuess.toLowerCase();
         guessIndex = wordInput.indexOf(newGuess);
         if(newGuess.length() == 1)
         {
@@ -50,6 +57,8 @@ public class App {
           if(guessIndex == -1)
           {
             wrongGuesses++;
+            wrongLettersGuessed = wrongLettersGuessed + " " + newGuess;
+            //if lost game
             if(wrongGuesses == 6)
             {
               for(int i = 50; i>0; i--)
@@ -57,7 +66,7 @@ public class App {
                 System.out.println("\n");
               }
               System.out.println("Game Over");
-              System.out.println("Better Luck Next Time")
+              System.out.println("Better Luck Next Time");
               System.out.println("Category: " + category);
               hangmanASCII(wrongGuesses);
               System.out.println(wordInput);
@@ -67,13 +76,43 @@ public class App {
           //if right letter
           else
           {
-            correctGuesses = correctGuesses.substring(0, guessIndex) + newGuess + correctGuesses.substring(guessIndex + 1);
-            correctLettersGuessed++
-            if(correctGuesses == wordLength)
+            while(wordInputTwo.indexOf(newGuess) != -1)
             {
-              System.out.println()
+              guessIndex = wordInputTwo.indexOf(newGuess);
+              correctGuesses = correctGuesses.substring(0, guessIndex) + newGuess + correctGuesses.substring(guessIndex + 1);
+              wordInputTwo = wordInputTwo.substring(0, guessIndex) + "*" + wordInputTwo.substring(guessIndex + 1);
+              correctLettersGuessed++;
+            }
+            //if won game
+            if(correctLettersGuessed == wordLength)
+            {
+              for(int i = 50; i>0; i--)
+              {
+                System.out.println("\n");
+              }
+              System.out.println("Congratulations!!!");
+              System.out.println("You win!!!");
+              System.out.println("Category: " + category);
+              hangmanASCII(wrongGuesses);
+              System.out.println(wordInput);
+              break;
             }
           }
+          for(int i = 50; i>0; i--)
+          {
+            System.out.println("\n");
+          }
+          if(!(wrongLettersGuessed.equals("")))
+          {
+            System.out.println("Wrong Letters: " + wrongLettersGuessed);
+          }
+          System.out.println("Category: " + category);
+          hangmanASCII(wrongGuesses);
+          System.out.println(correctGuesses);
+        }
+        else
+        {
+          System.out.println("Please only input one character at a time");
         }
       }
       
