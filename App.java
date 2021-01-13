@@ -115,8 +115,7 @@ public class App {
           System.out.println("Please only input one character at a time");
         }
       }
-      
-      
+      keyboard.close();
     }
 
     public static void hangmanASCII(int wrongGuesses)
